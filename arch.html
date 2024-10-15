@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>how 2 arch</title>
+    <style>
+        code {
+            background-color: lightgray;
+            padding: 3px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 	how 2 arch
@@ -55,37 +63,35 @@
     <hr />
     <h1>Formatting the partitions</h1>
     <h2>Filesystem partition</h2>
-    <p>Run the following command to format the filesystem partition</p>
-    <pre><code>
+    <code>
         mkfs.ext4 /dev/sda3
-    </code></pre>
+    </code>
     <h2>EFI partition</h2>
-    <p>Run the following command to format the EFI partition</p>
-    <pre><code>
+    <code>
         mkfs.fat -F 32 /dev/sda1
-    </code></pre>
+    </code>
     <h2>Swap partition</h2>
-    <p>If setting up a swap partition, run the following command to format it.</p>
-    <pre><code>
+    <p>(only if using a swap)</p>
+    <code>
         mkswap /dev/sda2
-    </code></pre>
+    </code>
     <h1>Mounting the partitions</h1>
     <h2>Filesystem partition</h2>
     <pre><code>mount /dev/sda3 /mnt</code></pre>
     <h2>EFI partition</h2>
     <p>First, create the EFI boot directory.</p>
-    <pre><code>
+    <code>
         mkdir -p /mnt/boot/efi
-    </code></pre>
+    </code>
     <p>Then you can mount the partition.</p>
-    <pre><code>
+    <code>
         mount /dev/sda1 /mnt/boot/efi
-    </code></pre>
+    </code>
     <h2>Swap partition</h2>
-    <p>If setting up a swap partition, turn it on now.</p>
-    <pre><code>
+    <p>(only if using a swap)</p>
+    <code>
         swapon /dev/sda2
-    </code></pre>
+    </code>
     <h2>Checking our work</h2>
     <p>After all of that, run <code>lsblk</code> to check your work.</p>
     <h1>Installing the base system</h1>
@@ -104,9 +110,9 @@
     </ul>
     <p>We're not going to install the desktop enviroment just yet (sorry).</p>
     <p>My usual setup:</p>
-    <pre><code>
+    <code>
         pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
-    </code></pre>
+    </code>
     <h1>Generating the filesystem tab (<code>fstab</code>)</h1>
     <p>Run <code>genfstab /mnt > /mnt/etc/fstab</code>.</p>
     <p>Verify the fstab by reading <code>/mnt/etc/fstab</code> (probably with <code>cat</code>)</p>
@@ -129,10 +135,10 @@
         <li>Run <code>locale-gen</code>.</li>
         <li>Open <code>/etc/locale.conf</code>.</li>
         <li>
-            Input the following:
-            <pre><code>
+            Input the following:<br />
+            <code>
                 LANG=[the locale you chose in the previous step (ex: en_US.UTF_8)]
-            </code></pre>
+            </code>
         </li>
         <li>Save the file and close your text editor.</li>
     </ol>
@@ -141,10 +147,10 @@
     <ol>
         <li>Open <code>/etc/vconsole.conf</code>.</li>
         <li>
-            Input the following:
-            <pre><code>
+            Input the following:<br />
+            <code>
                 KEYMAP=[the keymap you want (ex: us)]
-            </code></pre>
+            </code>
         </li>
         <li>Save the file and close your text editor.</li>
     </ol>
@@ -168,10 +174,10 @@
     <ol>
         <li>Run <code>EDITOR=[your text editor] visudo</code></li>
         <li>
-            Scroll down until you find this line:
-            <pre><code>
+            Scroll down until you find this line:<br />
+            <code>
                 # %wheel ALL=(ALL:ALL) ALL
-            </code></pre>
+            </code>
         </li>
         <li>Uncomment it by removing the <code>#</code>.</li>
         <li>Save the file and close your text editor.</li>
